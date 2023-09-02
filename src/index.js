@@ -24,7 +24,6 @@ async function addprdescription() {
     console.log("repo ", repo);
     // const JiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}` ;
     try {
-        //  console.log(owner,repo,pull_number);
         await client.rest.pulls.update({
             owner,
             repo,
