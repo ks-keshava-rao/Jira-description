@@ -21,6 +21,13 @@ jobs:
        id: jira
        run: |
              echo '${{toJSON(github)}}'
+     - name: print context in action
+       id: javascript
+       uses: ./
+       with:
+          token: ${{secrets.GITHUB_TOKEN}}
+        
+
     #  - name: Fetch Jira details
     #    id: jira
     #    run: |
