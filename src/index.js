@@ -1,5 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const { Octokit } = require("@octokit/rest");
+
 const token = core.getInput('token');
 const jiraId = core.getInput('jiraId');
 const orgUrl = core.getInput('orgUrl');
@@ -15,7 +17,6 @@ const owner = context.repo.owner;
 const repo = context.repo.repo;
 console.log("context , pr :::" , context);
 const JiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}` ;
-
 try {
  console.log(owner,repo,pull_number);
 }
