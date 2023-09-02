@@ -12,11 +12,11 @@ const client = new Octokit(
                     {auth: token
                 });
 const { context } = github;
-// const pull_number = context.payload.pull_request.number;
+const pull_number = context.payload.pull_request.number;
 // const owner = context.repo.owner;
 // const repo = context.repo.repo;
 console.log("context , pr :::" , context);
-console.log("github :::", github);
+console.log("pr no " , pull_number);
 // const JiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}` ;
 try {
 //  console.log(owner,repo,pull_number);
