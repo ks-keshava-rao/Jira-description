@@ -11,14 +11,15 @@ const jiraUsername = core.getInput('JiraUsername')
 const client = new Octokit(
                     {auth: token
                 });
-const { context } = github.context;
-const pull_number = context.payload.pull_request.number;
-const owner = context.repo.owner;
-const repo = context.repo.repo;
+const { context } = github;
+// const pull_number = context.payload.pull_request.number;
+// const owner = context.repo.owner;
+// const repo = context.repo.repo;
 console.log("context , pr :::" , context);
-const JiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}` ;
+console.log("github :::", github);
+// const JiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}` ;
 try {
- console.log(owner,repo,pull_number);
+//  console.log(owner,repo,pull_number);
 }
 catch(e){
     core.setFailed(`process failed with ::: ${e.message}`);
