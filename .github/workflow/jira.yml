@@ -1,0 +1,81 @@
+name: Update PR Description with Jira Title
+on:
+ pull_request:
+   types: [opened,synchronize,reopened]
+
+jobs:
+ update_pr_description:
+   runs-on: ubuntu-latest
+
+   steps:
+     - name: Checkout repository
+       uses: actions/checkout@v2
+
+     - name: Split Jira id from branch name
+       id: extract_branch_name
+       run: |
+           branch_name="${{github.event.pull_request.head.ref}}"
+           first_part=$(echo "$branch_name" | cut -d'/' -f1)
+           echo "::set-output name=jira_id::$first_part"
+     - name: print context
+       id: jira
+       run: |
+             echo '${{toJSON(github)}}'
+    #  - name: Fetch Jira details
+    #    id: jira
+    #    run: |
+    #      jiraIssueKey="${{ steps.extract_branch_name.outputs.jira_id }}"
+    #      jiraAPIURL="https://anywhereworks.atlassian.net/rest/api/2/issue/${jiraIssueKey}"
+    #      jiraURL="https://anywhereworks.atlassian.net/browse/${jiraIssueKey}"
+    #      response=$(curl -s -u ${{ secrets.JIRA_USERNAME }}:${{ secrets.JIRA_API_TOKEN }} $jiraAPIURL)
+    #      jiraSummary=$(echo "$response" | jq -r '.fields.summary')
+    #      jiraDescription=$(echo "$response" | jq -r '.fields.description')
+    #      jiraDescription="${jiraDescription//'%'/'%25'}"
+    #      jiraDescription="${jiraDescription//$'\n'/'%0A'}"
+    #      jiraDescription="${jiraDescription//$'\r'/'%0D'}"
+    #      if [[ "$jiraDescription" == "null" || "$$jiraDescription" == " " ]]; then
+    #      jiraDescription="No Jira description provided"
+    #      fi
+
+    #      echo "::set-output name=summary::$jiraSummary"
+    #      echo "::set-output name=description::$jiraDescription"
+    #      echo "::set-output name=url::$jiraURL"
+    #  - name: Get changed files
+    #    id: files
+    #    run: |
+    #        GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+    #        API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
+    #        CHANGED_FILES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $API_URL | jq -r '.[] | .filename')
+ 
+    #        # Extract only the last part of the file paths (file names without directories)
+    #        CHANGED_FILES_FORMATTED=""
+    #        while IFS= read -r line; do
+    #          FILENAME=$(basename "$line")
+    #          CHANGED_FILES_FORMATTED+="\n- $FILENAME"
+    #        done <<< "$CHANGED_FILES"
+ 
+    #        echo "::set-output name=changed_files::$CHANGED_FILES_FORMATTED"
+    #        echo "Changed Files:"
+    #        echo "$CHANGED_FILES_FORMATTED"
+ 
+    #  - name: Update PR Description
+    #    run: |
+    #      jiraTitle="${{ steps.jira.outputs.summary }}"
+    #      jiraDescription="${{ steps.jira.outputs.description }}"
+    #      jiraUrl="${{ steps.jira.outputs.url }}"
+    #      prNumber="${{ github.event.pull_request.number }}"
+    #      echo "$jiraDescription"
+    #      sonarUrl="https://sonar.anywhere.co/dashboard?id=adaptiveu&pullRequest=${prNumber}"
+    #      prDescriptionURL="https://api.github.com/repos/${{ github.repository }}/pulls/${prNumber}"
+    #      bearerToken="Bearer ${{ secrets.GITHUB_TOKEN }}"
+    #     #  template="{\"body\": \"## Description:\n**Jira Summary**: $jiraTitle\n\n**Jira Description**: $jiraDescription\n\n## Jira Ticket:\n$jiraUrl\n\n## Checklist:\n - [ ]  Code follows the coding style guidelines.\n - [ ] Tests have been added or updated.\n - [ ] Documentation has been updated if necessary.\n\n## Sonar Results:\n$sonarUrl\n\n\n## Reference Docs:\n[PR Standards](https://docs.google.com/document/d/1CGi67ib9S-EUmYRmhBLxbc2tLzv0I0C_DXUXnZ-vUkg/edit)\n[PR Review Guideline](https://docs.google.com/document/d/15Wt4jmwLwGkkF1ahCcb_FDKEF6Gbic-yDMbhbXwthRc/edit#)\"}"
+    #     #  echo "$template" > payload.json 
+    #     #  cat payload.json
+    #     #  curl -X PATCH "$prDescriptionURL" -H "Authorization: $bearerToken" -H "Content-Type: application/json" --data-binary "@payload.json"
+    #  - name: Update pr 
+    #    uses: actions/github-script@v6
+    #    with:
+    #       script: |
+             
+
+
