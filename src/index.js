@@ -28,7 +28,7 @@ const addprdescription = async() => {
             owner,
             repo,
             pull_number,
-            description,
+            body:description,
         })
     }
     catch (e) {
