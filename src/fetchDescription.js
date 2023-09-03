@@ -5,6 +5,5 @@ module.exports = async({authToken,jiraApiUrl}) => {
         });
     const { fields } = await response.json() ;
     const {description,summary} = fields;
-
     return fields;
 }
