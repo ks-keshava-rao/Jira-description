@@ -21,12 +21,15 @@ jobs:
        id: jira
        run: |
              echo '${{toJSON(github)}}'
-     - name: print context in action
+     - name: action test 
        id: javascript
        uses: ./
        with:
           token: ${{secrets.GITHUB_TOKEN}}
-        
+          jiraId: SWIT-309
+          orgUrl: https://anywhereworks.atlassian.net
+          jiraToken: ${{secrets.JIRA_API_TOKEN}}
+          jiraUsername: ${{secrets.JIRA_USERNAME}}
 
     #  - name: Fetch Jira details
     #    id: jira

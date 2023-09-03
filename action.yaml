@@ -7,18 +7,18 @@ inputs:
   token:
     description: "Github access token"
     required: true
-  # jiraId:
-  #   description: "Jira issue id"
-  #   required: true
-  # orgUrl: 
-  #   description: "organization's jira url"
-  #   required: true
-  # jiraToken:
-  #   description: "Jira token"
-  #   required: true
-  # jiraUsername:
-  #   description: "Jira username"
-  #   required: true
+  jiraId:
+    description: "Jira issue id"
+    required: true
+  orgUrl: 
+    description: "organization's jira url"
+    required: true
+  jiraToken:
+    description: "Jira token"
+    required: true
+  jiraUsername:
+    description: "Jira username"
+    required: true
   # sonarQubeUrl:
   #   description: "organization's sonarqube url"
   #   required: false

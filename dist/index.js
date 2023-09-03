@@ -13229,6 +13229,22 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 3335:
+/***/ ((module) => {
+
+module.exports = async({authToken,jiraApiUrl}) => {
+    const response = await fetch(jiraApiUrl,{
+        headers:{ 
+            Authorization: `Basic ${authToken}` } 
+        });
+    const { fields } = await response.json() ;
+    const {description,summary} = fields;
+
+    return fields;
+}
+
+/***/ }),
+
 /***/ 2431:
 /***/ ((module) => {
 
@@ -13409,29 +13425,29 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(5127);
 const github = __nccwpck_require__(3134);
 const { Octokit } = __nccwpck_require__(1563);
-async function addprdescription() {
-    const token = core.getInput('token');
-    const jiraId = core.getInput('jiraId');
-    const orgUrl = core.getInput('orgUrl');
-    const jiraToken = core.getInput('jiraToken');
-    const sonarQubeUrl = core.getInput('sonarQubeUrl')
-    const jiraUsername = core.getInput('JiraUsername')
-    const client = new Octokit(
-        {
+const fetchDescription = __nccwpck_require__(3335)
+const addprdescription = async() => {
+    try {
+        const token = core.getInput('token');
+        const jiraId = core.getInput('jiraId');
+        const orgUrl = core.getInput('orgUrl');
+        const jiraToken = core.getInput('jiraToken');
+        const orgSonarQubeUrl = (core.getInput('sonarQubeUrl') || false);
+        const jiraUsername = core.getInput('JiraUsername');
+        const authToken = Buffer.from(`${jiraUsername}:${jiraToken}`).toString('base64');
+        const client = new Octokit({
             auth: token
         });
-    const { context } = github;
-    const pull_number = context.payload.pull_request.number;
-    const owner = context.payload.repository.owner.login;
-    const repo = context.payload.pull_request.base.repo.name;
-    const body = "This is a test description in a paragraph\n\n*Why*\nThis denotes what is the issue\n\n*What*\nThis means how the problem is solved and what are the changes that have been done to solve the issue and what was the approach \n\n* test description with new changes and new description\n* test description with second changes .\n\n[https://mail.google.com/mail/u/0/?ogbl#inbox|https://mail.google.com/mail/u/0/?ogbl#inbox]"
-    // const repo = context.repo.repo;
-    console.log("context , pr :::", context);
-    console.log("pr no ", pull_number);
-    console.log("owner ", owner);
-    console.log("repo ", repo);
-    // const JiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}` ;
-    try {
+        const { context } = github;
+        const pull_number = context.payload.pull_request.number;
+        const owner = context.payload.repository.owner.login;
+        const repo = context.payload.pull_request.base.repo.name;
+        const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
+        const JiraUrl = `${orgUrl}/browse/${jiraId}`;
+        const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
+        // const body = "This is a test description in a paragraph\n\n*Why*\nThis denotes what is the issue\n\n*What*\nThis means how the problem is solved and what are the changes that have been done to solve the issue and what was the approach \n\n* test description with new changes and new description\n* test description with second changes .\n\n[https://mail.google.com/mail/u/0/?ogbl#inbox|https://mail.google.com/mail/u/0/?ogbl#inbox]"
+        const body = await fetchDescription({authToken,jiraApiUrl})
+        console.log("body :::", body);
         await client.rest.pulls.update({
             owner,
             repo,
