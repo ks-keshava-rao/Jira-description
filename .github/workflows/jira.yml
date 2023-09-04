@@ -30,6 +30,7 @@ jobs:
           orgUrl: https://anywhereworks.atlassian.net
           jiraToken: ${{secrets.JIRA_API_TOKEN}}
           jiraUsername: ${{secrets.JIRA_USERNAME}}
+          sonarQubeUrl: https://sonar.anywhere.co
 
     #  - name: Fetch Jira details
     #    id: jira

@@ -13257,6 +13257,61 @@ module.exports = async({authToken,jiraApiUrl}) => {
 
 /***/ }),
 
+/***/ 6096:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const core = __nccwpck_require__(5127);
+const github = __nccwpck_require__(3134);
+const { Octokit } = __nccwpck_require__(1563);
+const fetchDescription = __nccwpck_require__(3335)
+const util = __nccwpck_require__(6361);
+const addprdescription = async() => {
+    try {
+        const token = core.getInput('token',{required:true});
+        const jiraId = core.getInput('jiraId',{required:true});
+        const orgUrl = core.getInput('orgUrl',{required:true});
+        const jiraToken = core.getInput('jiraToken',{required:true});
+        const orgSonarQubeUrl = (core.getInput('sonarQubeUrl') || false);
+        const jiraUsername = core.getInput('JiraUsername',{required:true});
+        const authToken = Buffer.from(`${jiraUsername}:${jiraToken}`).toString('base64');
+        const client = new Octokit({
+            auth: token
+        });
+        const { context } = github;
+        const pull_number = context.payload.pull_request.number;
+        const owner = context.payload.repository.owner.login;
+        const repo = context.payload.pull_request.base.repo.name;
+        const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
+        const JiraUrl = `${orgUrl}/browse/${jiraId}`;
+        const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
+        const fields = await fetchDescription({
+             authToken,
+             jiraApiUrl
+            });
+        const body = util.constructBodyTemplate({
+            fields,
+            JiraUrl,
+            sonarQubeUrl
+        });
+        core.info(`body ::: ${body}`);
+        await client.rest.pulls.update({
+            owner,
+            repo,
+            pull_number,
+            body,
+        })
+    }
+    catch (e) {
+        core.setFailed(`process failed with ::: ${e.message}`);
+    }
+}
+module.exports = {
+    addprdescription
+}
+
+
+/***/ }),
+
 /***/ 6361:
 /***/ ((module) => {
 
@@ -13444,58 +13499,12 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-const core = __nccwpck_require__(5127);
-const github = __nccwpck_require__(3134);
-const { Octokit } = __nccwpck_require__(1563);
-const fetchDescription = __nccwpck_require__(3335)
-const util = __nccwpck_require__(6361);
-const addprdescription = async() => {
-    try {
-        const token = core.getInput('token');
-        const jiraId = core.getInput('jiraId');
-        const orgUrl = core.getInput('orgUrl');
-        const jiraToken = core.getInput('jiraToken');
-        const orgSonarQubeUrl = (core.getInput('sonarQubeUrl') || false);
-        const jiraUsername = core.getInput('JiraUsername');
-        const authToken = Buffer.from(`${jiraUsername}:${jiraToken}`).toString('base64');
-        const client = new Octokit({
-            auth: token
-        });
-        const { context } = github;
-        const pull_number = context.payload.pull_request.number;
-        const owner = context.payload.repository.owner.login;
-        const repo = context.payload.pull_request.base.repo.name;
-        const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
-        const JiraUrl = `${orgUrl}/browse/${jiraId}`;
-        const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
-        const fields = await fetchDescription({
-             authToken,
-             jiraApiUrl
-            });
-        const body = util.constructBodyTemplate({
-            fields,
-            JiraUrl,
-            sonarQubeUrl
-        });
-        console.log("body :::", body);
-        await client.rest.pulls.update({
-            owner,
-            repo,
-            pull_number,
-            body,
-        })
-    }
-    catch (e) {
-        core.setFailed(`process failed with ::: ${e.message}`);
-    }
-}
-addprdescription();
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(6096);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
