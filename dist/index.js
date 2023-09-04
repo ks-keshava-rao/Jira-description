@@ -13245,6 +13245,7 @@ const addprdescription = async() => {
         const jiraToken = core.getInput('jiraToken',{required:true});
         const orgSonarQubeUrl = (core.getInput('sonarQubeUrl') || false);
         const jiraUsername = core.getInput('JiraUsername',{required:true});
+        const customfieldObj = JSON.parse(core.getInput('customfield',{required:false}));
         const authToken = Buffer.from(`${jiraUsername}:${jiraToken}`).toString('base64');
         const client = new Octokit({
             auth: token
@@ -13256,7 +13257,7 @@ const addprdescription = async() => {
         const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
         const JiraUrl = `${orgUrl}/browse/${jiraId}`;
         const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
-        console.log(" data ::::",owner,pull_number,repo,jiraApiUrl);
+        console.log(" customfield ::::",customfieldObj);
         const fields = await fetchDescription({
              authToken,
              jiraApiUrl

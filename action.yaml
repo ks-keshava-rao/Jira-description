@@ -13,6 +13,9 @@ inputs:
   orgUrl: 
     description: "organization's jira url"
     required: true
+  customfields: 
+    description: "Json data for the custom fields"
+    required: true
   jiraToken:
     description: "Jira token"
     required: true
