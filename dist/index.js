@@ -13229,35 +13229,7 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 3335:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-
-const { error } = __nccwpck_require__(5127);
-const util = __nccwpck_require__(6361)
-module.exports = async({authToken,jiraApiUrl}) => {
-    try{
-    const response = await fetch(jiraApiUrl,{
-        headers:{ 
-            Authorization: `Basic ${authToken}` } 
-        });
-        if(response.ok){
-             const { fields } = await response.json() ; 
-             console.log('fields :::',fields);
-             return fields;
-        }
-        else{
-            throw new Error(`Failed to fetch response from jira api :: ${response}`);
-        }
-    }
-    catch(e){
-        core.setFailed(e.message);
-    }
-}
-
-/***/ }),
-
-/***/ 6096:
+/***/ 2202:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(5127);
@@ -13284,6 +13256,7 @@ const addprdescription = async() => {
         const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
         const JiraUrl = `${orgUrl}/browse/${jiraId}`;
         const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
+        console.log(" data ::::",owner,pull_number,repo,jiraApiUrl);
         const fields = await fetchDescription({
              authToken,
              jiraApiUrl
@@ -13309,6 +13282,35 @@ module.exports = {
     addprdescription
 }
 
+
+/***/ }),
+
+/***/ 3335:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+
+const { error } = __nccwpck_require__(5127);
+const util = __nccwpck_require__(6361)
+module.exports = async({authToken,jiraApiUrl}) => {
+    try{
+        console.log("Called fetch description");
+    const response = await fetch(jiraApiUrl,{
+        headers:{ 
+            Authorization: `Basic ${authToken}` } 
+        });
+        if(response.ok){
+             const { fields } = await response.json() ; 
+             console.log('fields :::',fields);
+             return fields;
+        }
+        else{
+            throw new Error(`Failed to fetch response from jira api :: ${response}`);
+        }
+    }
+    catch(e){
+        core.setFailed(e.message);
+    }
+}
 
 /***/ }),
 
@@ -13499,12 +13501,20 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(6096);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const trigger = __nccwpck_require__(2202);
+const core = __nccwpck_require__(5127);
+core.info("fetching jira descriptio.....");
+trigger.addprdescription()
+.catch(error=>{
+    core.setFailed(error.message);
+});
+core.info("fetched successfully");
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
