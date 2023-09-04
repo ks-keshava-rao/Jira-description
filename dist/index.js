@@ -13245,7 +13245,7 @@ const addprdescription = async() => {
         const jiraToken = core.getInput('jiraToken',{required:true});
         const orgSonarQubeUrl = (core.getInput('sonarQubeUrl') || false);
         const jiraUsername = core.getInput('JiraUsername',{required:true});
-        const customfieldObj = JSON.parse(core.getInput('customfield',{required:false}));
+        const customfieldObj = core.getInput('customfield',{required:false});
         const authToken = Buffer.from(`${jiraUsername}:${jiraToken}`).toString('base64');
         const client = new Octokit({
             auth: token
