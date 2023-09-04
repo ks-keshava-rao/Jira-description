@@ -51,23 +51,23 @@ jobs:
     #      echo "::set-output name=summary::$jiraSummary"
     #      echo "::set-output name=description::$jiraDescription"
     #      echo "::set-output name=url::$jiraURL"
-    #  - name: Get changed files
-    #    id: files
-    #    run: |
-    #        GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-    #        API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-    #        CHANGED_FILES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $API_URL | jq -r '.[] | .filename')
+     - name: Get changed files
+       id: files
+       run: |
+           GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+           API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
+           CHANGED_FILES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $API_URL | jq -r '.[] | .filename')
  
-    #        # Extract only the last part of the file paths (file names without directories)
-    #        CHANGED_FILES_FORMATTED=""
-    #        while IFS= read -r line; do
-    #          FILENAME=$(basename "$line")
-    #          CHANGED_FILES_FORMATTED+="\n- $FILENAME"
-    #        done <<< "$CHANGED_FILES"
+           # Extract only the last part of the file paths (file names without directories)
+           CHANGED_FILES_FORMATTED=""
+           while IFS= read -r line; do
+             FILENAME=$(basename "$line")
+             CHANGED_FILES_FORMATTED+="\n- $FILENAME"
+           done <<< "$CHANGED_FILES"
  
-    #        echo "::set-output name=changed_files::$CHANGED_FILES_FORMATTED"
-    #        echo "Changed Files:"
-    #        echo "$CHANGED_FILES_FORMATTED"
+           echo "::set-output name=changed_files::$CHANGED_FILES_FORMATTED"
+           echo "Changed Files:"
+           echo "$CHANGED_FILES_FORMATTED"
  
     #  - name: Update PR Description
     #    run: |
