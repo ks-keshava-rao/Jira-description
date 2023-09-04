@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { Octokit } = require("@octokit/rest");
 const fetchDescription = require('./fetchDescription')
+const util = require('./util');
 const addprdescription = async() => {
     try {
         const token = core.getInput('token');
@@ -21,14 +22,21 @@ const addprdescription = async() => {
         const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
         const JiraUrl = `${orgUrl}/browse/${jiraId}`;
         const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
-        // const body = "This is a test description in a paragraph\n\n*Why*\nThis denotes what is the issue\n\n*What*\nThis means how the problem is solved and what are the changes that have been done to solve the issue and what was the approach \n\n* test description with new changes and new description\n* test description with second changes .\n\n[https://mail.google.com/mail/u/0/?ogbl#inbox|https://mail.google.com/mail/u/0/?ogbl#inbox]"
-        const {description} = await fetchDescription({authToken,jiraApiUrl});
+        const fields = await fetchDescription({
+             authToken,
+             jiraApiUrl
+            });
+        const body = util.constructBodyTemplate({
+            fields,
+            JiraUrl,
+            sonarQubeUrl
+        });
         console.log("body :::", description);
         await client.rest.pulls.update({
             owner,
             repo,
             pull_number,
-            body:description,
+            body,
         })
     }
     catch (e) {

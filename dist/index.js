@@ -13230,16 +13230,42 @@ function wrappy (fn, cb) {
 /***/ }),
 
 /***/ 3335:
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
+
+const { error } = __nccwpck_require__(5127);
+const util = __nccwpck_require__(6361)
 module.exports = async({authToken,jiraApiUrl}) => {
+    try{
     const response = await fetch(jiraApiUrl,{
         headers:{ 
             Authorization: `Basic ${authToken}` } 
         });
-    const { fields } = await response.json() ;
-    const {description,summary} = fields;
-    return fields;
+        if(response.ok){
+             const { fields } = await response.json() ; 
+             console.log('fields :::',fields);
+             return fields;
+        }
+        else{
+            throw new Error(`Failed to fetch response from jira api :: ${response}`);
+        }
+    }
+    catch(e){
+        core.setFailed(e.message);
+    }
+}
+
+/***/ }),
+
+/***/ 6361:
+/***/ ((module) => {
+
+module.exports = {
+    constructBodyTemplate: ({fields,sonarQubeUrl,JiraUrl})=>{
+        const { description , summary}=fields;
+        const body = `## Description:\n**Summary**: ${summary}\n\n ${description}\n\n## Changed Files:\n$changedFiles\n\n## Jira Ticket:\n${JiraUrl}\n\n## Checklist:\n - [ ]  Code follows the coding style guidelines.\n - [ ] Tests have been added or updated.\n - [ ] Documentation has been updated if necessary.\n\n## Sonar Results:\n${sonarQubeUrl}\n\n## Screenshots:\n\n\n## Additional Notes:\n\n\n## Reference Docs:\n";`
+        return body;
+    }
 }
 
 /***/ }),
@@ -13425,6 +13451,7 @@ const core = __nccwpck_require__(5127);
 const github = __nccwpck_require__(3134);
 const { Octokit } = __nccwpck_require__(1563);
 const fetchDescription = __nccwpck_require__(3335)
+const util = __nccwpck_require__(6361);
 const addprdescription = async() => {
     try {
         const token = core.getInput('token');
@@ -13444,14 +13471,21 @@ const addprdescription = async() => {
         const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
         const JiraUrl = `${orgUrl}/browse/${jiraId}`;
         const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
-        // const body = "This is a test description in a paragraph\n\n*Why*\nThis denotes what is the issue\n\n*What*\nThis means how the problem is solved and what are the changes that have been done to solve the issue and what was the approach \n\n* test description with new changes and new description\n* test description with second changes .\n\n[https://mail.google.com/mail/u/0/?ogbl#inbox|https://mail.google.com/mail/u/0/?ogbl#inbox]"
-        const {description} = await fetchDescription({authToken,jiraApiUrl});
+        const fields = await fetchDescription({
+             authToken,
+             jiraApiUrl
+            });
+        const body = util.constructBodyTemplate({
+            fields,
+            JiraUrl,
+            sonarQubeUrl
+        });
         console.log("body :::", description);
         await client.rest.pulls.update({
             owner,
             repo,
             pull_number,
-            body:description,
+            body,
         })
     }
     catch (e) {
