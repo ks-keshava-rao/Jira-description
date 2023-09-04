@@ -13480,7 +13480,7 @@ const addprdescription = async() => {
             JiraUrl,
             sonarQubeUrl
         });
-        console.log("body :::", description);
+        console.log("body :::", body);
         await client.rest.pulls.update({
             owner,
             repo,
