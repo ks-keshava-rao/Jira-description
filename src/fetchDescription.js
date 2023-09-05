@@ -16,5 +16,6 @@ module.exports = async({authToken,jiraApiUrl}) => {
     }
     catch(e){
         core.setFailed(e.message);
+        process.exit(1)
     }
 }
