@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 module.exports = async({authToken,jiraApiUrl}) => {
     try{
+    core.info('fetching...')
     const response = await fetch(jiraApiUrl,{
         headers:{ 
             Authorization: `Basic ${authToken}` } 
