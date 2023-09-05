@@ -21,28 +21,12 @@ jobs:
        id: jira
        run: |
              echo '${{toJSON(github)}}'
-     - name: Get changed files
-       id: files
-       run: |
-           GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-           API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-           CHANGED_FILES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $API_URL | jq -r '.[] | .filename')
- 
-           # Extract only the last part of the file paths (file names without directories)
-           CHANGED_FILES_FORMATTED=""
-           while IFS= read -r line; do
-             FILENAME=$(basename "$line")
-             CHANGED_FILES_FORMATTED+="\n- $FILENAME"
-           done <<< "$CHANGED_FILES"
-           echo "::set-output name=changed_files::$CHANGED_FILES_FORMATTED"
-           echo "Changed Files:"
-           echo "$CHANGED_FILES_FORMATTED"
      - name: action test 
        id: javascript
        uses: ./
        with:
           token: ${{secrets.GITHUB_TOKEN}}
-          jiraId: SWIT-309
+          jiraId: SIT-309
           orgUrl: https://anywhereworks.atlassian.net
           jiraToken: ${{secrets.JIRA_API_TOKEN}}
           jiraUsername: ${{secrets.JIRA_USERNAME}}
