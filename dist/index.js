@@ -13256,6 +13256,7 @@ const addprdescription = async() => {
         const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
         const JiraUrl = `${orgUrl}/browse/${jiraId}`;
         const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
+        core.info(owner,repo,pull_number,jiraId,jiraApiUrl)
         const fields = await fetchDescription({
              authToken,
              jiraApiUrl
@@ -13290,6 +13291,7 @@ module.exports = {
 const core = __nccwpck_require__(5127);
 module.exports = async({authToken,jiraApiUrl}) => {
     try{
+    core.info('fetching...')
     const response = await fetch(jiraApiUrl,{
         headers:{ 
             Authorization: `Basic ${authToken}` } 
