@@ -26,7 +26,7 @@ jobs:
        uses: ./
        with:
           token: ${{secrets.GITHUB_TOKEN}}
-          jiraId: SIT-309
+          jiraId: SWIT-309
           orgUrl: https://anywhereworks.atlassian.net
           jiraToken: ${{secrets.JIRA_API_TOKEN}}
           jiraUsername: ${{secrets.JIRA_USERNAME}}
