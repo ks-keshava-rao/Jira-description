@@ -26,7 +26,7 @@ jobs:
        uses: ./
        with:
           token: ${{secrets.GITHUB_TOKEN}}
-          jiraId: T-1
+          jiraId: TT-1
           orgUrl: https://testcompany4.atlassian.net
           jiraToken: ${{secrets.JIRATOKEN}}
           jiraUsername: ${{secrets.USERNAME}}
