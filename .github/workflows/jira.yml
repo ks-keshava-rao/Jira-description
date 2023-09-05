@@ -28,8 +28,8 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           jiraId: SWIT-309
           orgUrl: https://anywhereworks.atlassian.net
-          jiraToken: ${{secrets.JIRA_API_TOKEN}}
-          jiraUsername: ${{secrets.JIRA_USERNAME}}
+          jiraToken: ${{secrets.JIRATOKEN}}
+          jiraUsername: ${{secrets.USERNAME}}
           sonarQubeUrl: https://sonar.anywhere.co
           
     
