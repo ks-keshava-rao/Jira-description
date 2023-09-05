@@ -46,6 +46,7 @@ jobs:
           orgUrl: https://anywhereworks.atlassian.net
           jiraToken: ${{secrets.JIRA_API_TOKEN}}
           jiraUsername: ${{secrets.JIRA_USERNAME}}
+          sonarQubeUrl: https://sonar.anywhere.co
           customfields: '{"customfield123": "developer testing", "customfield433": "acceptance criteria"}'
           filesChanges: ${{steps.files.outputs.changed_files}}
           
