@@ -9,7 +9,7 @@ const addprdescription = async() => {
         const jiraId = core.getInput('jiraId',{required:true});
         const orgUrl = core.getInput('orgUrl',{required:true});
         const jiraToken = core.getInput('jiraToken',{required:true});
-        const orgSonarQubeUrl = (core.getInput('sonarQubeUrl') || false);
+        const orgSonarQubeUrl = (core.getInput('sonarQubeUrl',{required:false}) || false);
         const jiraUsername = core.getInput('JiraUsername',{required:true});
         const customfieldObj = core.getInput('customfields',{required:false});
         const filesChanges = core.getInput('filesChanges');

@@ -13243,7 +13243,7 @@ const addprdescription = async() => {
         const jiraId = core.getInput('jiraId',{required:true});
         const orgUrl = core.getInput('orgUrl',{required:true});
         const jiraToken = core.getInput('jiraToken',{required:true});
-        const orgSonarQubeUrl = (core.getInput('sonarQubeUrl') || false);
+        const orgSonarQubeUrl = (core.getInput('sonarQubeUrl',{required:false}) || false);
         const jiraUsername = core.getInput('JiraUsername',{required:true});
         const customfieldObj = core.getInput('customfields',{required:false});
         const filesChanges = core.getInput('filesChanges');
@@ -13289,11 +13289,9 @@ module.exports = {
 /***/ }),
 
 /***/ 3335:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ ((module) => {
 
 
-const { error } = __nccwpck_require__(5127);
-const util = __nccwpck_require__(6361)
 module.exports = async({authToken,jiraApiUrl}) => {
     try{
         console.log("Called fetch description");
@@ -13323,7 +13321,10 @@ module.exports = async({authToken,jiraApiUrl}) => {
 module.exports = {
     constructBodyTemplate: ({fields,sonarQubeUrl,JiraUrl})=>{
         const { description , summary}=fields;
-        const body = `## Description:\n### Summary : \n${summary}\n\n ${description}\n\n## Changed Files:\n$changedFiles\n\n## Jira Ticket:\n${JiraUrl}\n\n## Checklist:\n - [ ]  Code follows the coding style guidelines.\n - [ ] Tests have been added or updated.\n - [ ] Documentation has been updated if necessary.\n\n## Sonar Results:\n${sonarQubeUrl}\n\n## Screenshots:\n\n\n## Additional Notes:\n\n\n## Reference Docs:\n`
+        const body = `## Description:\n### Summary : \n${summary}\n\n ${description}\n\n## Changed 
+                      Files:\n$changedFiles\n\n## Jira Ticket:\n${JiraUrl}\n\n## Checklist:\n - [ ]  
+                      Code follows the coding style guidelines.\n - [ ] Tests have been added or updated.\n -
+                      [ ] Documentation has been updated if necessary.${ sonarQubeUrl ? `\n\n## Sonar Results:\n${sonarQubeUrl}`:""}`;
         return body;
     }
 }

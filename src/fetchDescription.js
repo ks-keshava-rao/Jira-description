@@ -1,6 +1,4 @@
 
-const { error } = require('@actions/core');
-const util = require('./util')
 module.exports = async({authToken,jiraApiUrl}) => {
     try{
         console.log("Called fetch description");
