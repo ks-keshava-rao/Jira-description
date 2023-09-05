@@ -13286,9 +13286,9 @@ module.exports = {
 /***/ }),
 
 /***/ 3335:
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-
+const core = __nccwpck_require__(5127);
 module.exports = async({authToken,jiraApiUrl}) => {
     try{
         console.log("Called fetch description");
@@ -13298,7 +13298,6 @@ module.exports = async({authToken,jiraApiUrl}) => {
         });
         if(response.ok){
              const { fields } = await response.json() ; 
-             console.log('fields :::',fields);
              return fields;
         }
         else{
