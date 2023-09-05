@@ -27,7 +27,7 @@ jobs:
        with:
           token: ${{secrets.GITHUB_TOKEN}}
           jiraId: TT-1
-          orgUrl: https://anywhereworks.atlassian.net
+          orgUrl: https://testcompany4.atlassian.net
           jiraToken: ${{secrets.JIRATOKEN}}
           jiraUsername: ${{secrets.USERNAME}}
           sonarQubeUrl: https://sonar.anywhere.co
