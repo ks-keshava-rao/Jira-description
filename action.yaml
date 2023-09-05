@@ -25,6 +25,9 @@ inputs:
   sonarQubeUrl:
     description: "organization's sonarqube url"
     required: false
+  filesChanges:
+    description: "files that were changed during PR creation"
+    required: false
 runs:
   using: 'node20'
   main: 'dist/index.js'
