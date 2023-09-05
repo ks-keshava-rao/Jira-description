@@ -23,8 +23,6 @@ const addprdescription = async() => {
         const jiraApiUrl = `${orgUrl}/rest/api/2/issue/${jiraId}`;
         const JiraUrl = `${orgUrl}/browse/${jiraId}`;
         const sonarQubeUrl = (orgSonarQubeUrl ? `${orgSonarQubeUrl}/dashboard?id=${repo}&pullRequest=${pull_number}` : "");
-        console.log(" customfield ::::",filesChanges);
-        console.log(" changesfiles ::::",);
         const fields = await fetchDescription({
              authToken,
              jiraApiUrl
