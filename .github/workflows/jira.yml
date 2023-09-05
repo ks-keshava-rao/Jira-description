@@ -34,7 +34,6 @@ jobs:
              FILENAME=$(basename "$line")
              CHANGED_FILES_FORMATTED+="\n- $FILENAME"
            done <<< "$CHANGED_FILES"
- 
            echo "::set-output name=changed_files::$CHANGED_FILES_FORMATTED"
            echo "Changed Files:"
            echo "$CHANGED_FILES_FORMATTED"
