@@ -1,7 +1,7 @@
 name: Update PR Description with Jira Title
 on:
  pull_request:
-   types: [opened,synchronize,reopened]
+   types: [opened,reopened]
 
 jobs:
  update_pr_description:

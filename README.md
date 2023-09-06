@@ -45,8 +45,8 @@ jobs:
 | `jiraUsername` | Email address or  username of the user account in Jira from which the `jiraToken` was obtained  [refer](#jira-authorization-credentials) . | ${{secrets.JIRA_USERNAME}} | Yes |
 | `sonarQubeUrl` | Organization's  sonarQube sub-domain for code quality and analysis if applicable .  | https://sonar.testcompany.co | No |
 
-## Action result
-The action will fail the workflow in case required input fields provided are incorrect or invalid
+> [!WARNING]  
+>Action result - the action will fail the workflow in case required input fields provided are incorrect or invalid .
 
 ## jira-authorization-credentials 
 1. Jira API token can be obtained from the account settings in Jira , [reference](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) .
