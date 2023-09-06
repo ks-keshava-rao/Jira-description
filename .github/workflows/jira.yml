@@ -1,0 +1,39 @@
+name: Update PR Description with Jira Title
+on:
+ pull_request:
+   types: [opened,synchronize,reopened]
+
+jobs:
+ update_pr_description:
+   runs-on: ubuntu-latest
+
+   steps:
+     - name: Checkout repository
+       uses: actions/checkout@v2
+
+     - name: Split Jira id from branch name
+       id: extract_branch_name
+       run: |
+           branch_name="${{github.event.pull_request.head.ref}}"
+           first_part=$(echo "$branch_name" | cut -d'/' -f1)
+           echo "::set-output name=jira_id::$first_part"
+     - name: print context
+       id: jira
+       run: |
+             echo '${{toJSON(github)}}'
+     - name: action test 
+       id: javascript
+       uses: ./
+       with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          jiraId: TT-1
+          orgUrl: https://testcompany4.atlassian.net
+          jiraToken: ${{secrets.JIRATOKEN}}
+          jiraUsername: ${{secrets.USERNAME}}
+          sonarQubeUrl: https://sonar.anywhere.co
+          
+    
+ 
+             
+
+
