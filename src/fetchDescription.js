@@ -11,7 +11,7 @@ module.exports = async({authToken,jiraApiUrl}) => {
              return fields;
         }
         else{
-            throw new Error(`Failed to fetch response from jira api, please check Organisation url , jira token , jira username :::: ${ JSON.stringify(response)}`);
+            throw new Error(`Failed to fetch response from jira api, please check Organisation url , jira token , jira username :::: ${ JSON.stringify(await response.json())}`);
         }
     }
     catch(e){
